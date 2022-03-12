@@ -1,7 +1,6 @@
 from flask import Flask, request
 import logging
 import json
-import os
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -25,10 +24,11 @@ def main():
 
 def handle_dialog(req, res):
     user_id = req['session']['user_id']
-
-    if req['session']['new']:
+    if req['request']['original_utterance'].lower() in ['помощь', 'что ты умеешь'] or req['session']['new']:
         sessionStorage[user_id] = {'suggests': ["Не хочу.", "Не буду.", "Отстань!"]}
-        res['response']['text'] = 'Привет! Купи слона!'
+        res['response']['text'] = 'Данный навык продает вам слона.' \
+                                  ' Что купить слона отвечайте на сообщения нажатием кнопок в диалоговом окне.' \
+                                  ' А теперь начнем! Купи слона!'
         res['response']['buttons'] = get_suggests(user_id)
         return
 
@@ -54,5 +54,4 @@ def get_suggests(user_id):
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run()
