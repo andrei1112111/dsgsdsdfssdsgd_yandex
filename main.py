@@ -24,7 +24,8 @@ def main():
 
 def handle_dialog(req, res):
     user_id = req['session']['user_id']
-    if req['request']['original_utterance'].lower() in ['помощь', 'что ты умеешь'] or req['session']['new']:
+    if 'помощь' in req['request']['original_utterance'].lower() or 'что ты умеешь' in req['request'][
+        'original_utterance'].lower() or req['session']['new']:
         sessionStorage[user_id] = {'suggests': ["Не хочу.", "Не буду.", "Отстань!"]}
         res['response']['text'] = 'Данный навык продает вам слона.' \
                                   ' Что купить слона отвечайте на сообщения нажатием кнопок в диалоговом окне.' \
