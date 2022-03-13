@@ -29,7 +29,7 @@ def handle_dialog(req, res):
         'original_utterance'].lower() or req['session']['new']:
         sessionStorage[user_id] = {'suggests': ["Не хочу.", "Не буду.", "Отстань!"]}
         res['response']['text'] = 'Данный навык продает вам слона.' \
-                                  ' Что купить слона отвечайте на сообщения нажатием кнопок в диалоговом окне.' \
+                                  ' Чтобы купить слона отвечайте на сообщения нажатием кнопок в диалоговом окне.' \
                                   ' А теперь начнем! Купи слона!'
         res['response']['buttons'] = get_suggests(user_id)
         return
