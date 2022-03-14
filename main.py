@@ -53,7 +53,7 @@ def get_suggests(user_id):
     ]
     session['suggests'] = session['suggests'][1:]
     sessionStorage[user_id] = session
-    if len(suggests) < 2 and suggests[0] != 'начать':
+    if len(suggests) < 2 and suggests[0]['title'] != 'начать':
         suggests.append({"title": "Ладно", "url": "https://market.yandex.ru/search?text=слон", "hide": True})
     return suggests
 
