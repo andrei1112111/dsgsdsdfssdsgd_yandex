@@ -25,10 +25,15 @@ def main():
 
 def handle_dialog(req, res):
     user_id = req['session']['user_id']
-    if 'помощь' in req['request']['original_utterance'].lower() or 'что ты умеешь' in req['request'][
-        'original_utterance'].lower() or req['session']['new']:
+    if req['session']['new']:
         sessionStorage[user_id] = {'suggests': ["начать"]}
         res['response']['text'] = 'Привет! В этом навыке я заставлю тебя купить слона. Скажи НАЧАТЬ.'
+        res['response']['buttons'] = get_suggests(user_id)
+        return
+    if 'помощь' in req['request']['original_utterance'].lower() or 'что ты умеешь' in req['request'][
+        'original_utterance'].lower():
+        sessionStorage[user_id] = {'suggests': ["начать"]}
+        res['response']['text'] = 'Чтобы начать игру скажи НАЧАТЬ, а чтобы закончить скажи ХВАТИТ.'
         res['response']['buttons'] = get_suggests(user_id)
         return
     if req['request']['original_utterance'].lower() == 'начать':
@@ -43,6 +48,10 @@ def handle_dialog(req, res):
         return
     res['response']['text'] = f"Все говорят '{req['request']['original_utterance']}', а ты купи слона!"
     res['response']['buttons'] = get_suggests(user_id)
+    if 'хватит' in  req['request']['original_utterance'].lower():
+        res['response']['text'] = 'Вы так и не купили слона('
+        res['response']['end_session'] = True
+        return
 
 
 def get_suggests(user_id):
