@@ -46,9 +46,14 @@ def handle_dialog(req, res):
         res['response']['text'] = 'Слона можно найти на Яндекс.Маркете!'
         res['response']['end_session'] = True
         return
-    res['response']['text'] = f"Все говорят '{req['request']['original_utterance']}', а ты купи слона!"
-    res['response']['buttons'] = get_suggests(user_id)
-    if 'хватит' in  req['request']['original_utterance'].lower():
+    try:
+        res['response']['text'] = f"Все говорят '{req['request']['original_utterance']}', а ты купи слона!"
+        res['response']['buttons'] = get_suggests(user_id)
+    except Exception:
+        sessionStorage[user_id] = {'suggests': ["Не хочу.", "Не буду.", "Отстань!"]}
+        res['response']['text'] = 'Ну купи слона!'
+        res['response']['buttons'] = get_suggests(user_id)
+    if 'хватит' in req['request']['original_utterance'].lower():
         res['response']['text'] = 'Вы так и не купили слона('
         res['response']['end_session'] = True
         return
